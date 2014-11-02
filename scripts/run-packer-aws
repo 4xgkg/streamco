@@ -1,0 +1,6 @@
+#!/bin/bash
+export PACKER_LOG=1
+export PACKER_LOG_PATH=packer.log
+exec packer build \
+  $(awk -F, 'NR == 2 { print "-var aws_access_key=" $2, "-var aws_secret_key=" $3 }' ../credentials.csv) \
+  packer-streamco.json

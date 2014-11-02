@@ -1,0 +1,5 @@
+#!/bin/bash
+# Validate a CloudFormation stack template
+exec /usr/local/share/python/aws cloudformation \
+  validate-template \
+  --template-body file://streamco.template

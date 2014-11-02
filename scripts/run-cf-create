@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Create an AWS CloudFormation stack frm a local template
+exec aws cloudformation create-stack \
+  --stack-name StreamcoLab \
+  --template-body file://streamco.template \
+  $@

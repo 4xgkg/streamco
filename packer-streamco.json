@@ -1,0 +1,38 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "ap-southeast-2",
+    "source_ami": "ami-2111731b",
+    "instance_type": "t1.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "packer-example {{timestamp}}"
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "sudo wget http://apt.puppetlabs.com/puppetlabs-release-trusty.deb",
+        "sudo dpkg -i puppetlabs-release-trusty.deb",
+        "sudo apt-get update",
+        "sudo apt-get install -y puppet"
+      ]
+    },
+    {
+      "type": "puppet-masterless",
+      "manifest_file": "puppet/manifests/default.pp",
+      "module_paths": [ "puppet/modules" ]
+    },
+    {
+      "type": "file",
+      "source": "tests",
+      "destination": "/tmp"
+    }
+  ]
+}
